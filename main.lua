@@ -12,7 +12,7 @@ function main()
 			-- open, close = ds:O(lastCandlePosition-1), ds:C(lastCandlePosition-1);
 			body = body - body%0.01;
 			avr = avrBodyCandle(8);
-			avr = avr - avr%0.01;
+			avr = avr - avr%0.01; -- псевдо округление до 2-х знаков
 			message("candle body:\t"..tostring(body).."\navr:\t\t"..tostring(avr));
 			-- message("open:\t"..tostring(open).."close:\t"..tostring(close).."\navr:\t"..tostring(avr));
 		else
