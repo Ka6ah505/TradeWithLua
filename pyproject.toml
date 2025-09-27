@@ -6,8 +6,11 @@ authors = [
     {name = "Sergey Mironov",email = "ka6ah505@gmail.com"}
 ]
 readme = "README.md"
+package-mode = false
 requires-python = ">=3.11"
 dependencies = [
+    "httpx (>=0.28.1,<0.29.0)",
+    "pandas (>=2.3.2,<3.0.0)",
 ]
 
 
