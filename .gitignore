@@ -3,3 +3,5 @@ logs/*
 !logs/
 download_data/*
 !download_data/
+
+!*/.gitkeep
