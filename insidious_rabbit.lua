@@ -1,9 +1,9 @@
-dofile (getScriptPath() .. "\\MFrameWork.lua")
+dofile(getScriptPath() .. "\\MFrameWork.lua")
 IsRun = true;
 FileName = "log1.txt";
-file=nil;
+file = nil;
 flag = true;
-typePosition="";
+typePosition = "";
 candlePosition = 0;
 countCandle = 0;
 m_qty = "2";
@@ -13,12 +13,12 @@ ds = {};
 
 -------------------
 --secCode = "QJSIM";
-secCode="SPBFUT";
+secCode = "SPBFUT";
 --classCode = "SBER";
 classCode = "BRX4";
 --tradeAcount = "NL0011100043";     -- Торговый счет
 tradeAcount = "SPBFUT00f91";
-clientCode = "SPBFUT00f91";     -- Код клиента
+clientCode = "SPBFUT00f91"; -- Код клиента
 --indication = "ema1";
 indication = "tt";
 
@@ -34,7 +34,7 @@ function main()
 
 		if (ds ~= nil) then
 			CandlesCount = getNumCandles(indication)
-			local tab, n, l = getCandlesByIndex(indication, 0, CandlesCount-2, 2);
+			local tab, n, l = getCandlesByIndex(indication, 0, CandlesCount - 2, 2);
 			DeleteRow(t, 1);
 			InsertRow(t, -1);
 			SetCell(t, 1, 0, tostring(IsRun));
@@ -62,7 +62,7 @@ function OnStop()
 end;
 
 function OnInit()
-	message("Start...",2);
+	message("Start...", 2);
 	OpenFile();
 	--ds = CreateDataSource("SPBFUT", "BRJ6", INTERVAL_H1);
 	ds = CreateDataSource(secCode, classCode, INTERVAL_M5);
@@ -82,23 +82,22 @@ function OnInit()
 	SetCell(t, 1, 2, "0");
 	--InsertRow(t, -1);
 	--DeleteRow(t, 1);
-
 end;
 
 function OpenFile()
-	file = io.open(getScriptPath().."\\"..FileName, "a"); --???????? ?????
+	file = io.open(getScriptPath() .. "\\" .. FileName, "a"); --отркываем для модификации
 	if file == nil then
-		file = io.open(getScriptPath().."\\"..FileName, "w"); --???????? ????? ??? ??????
+		file = io.open(getScriptPath() .. "\\" .. FileName, "w"); --создаем для начала
 		file:close();
-		file = io.open(getScriptPath().."\\"..FileName, "a");
-		file:seek("end",0);
+		file = io.open(getScriptPath() .. "\\" .. FileName, "a");
+		file:seek("end", 0);
 	end;
-	file:write(getInfoParam("SERVERTIME").." START\n");
+	file:write(getInfoParam("SERVERTIME") .. " START\n");
 	file:flush();
 end;
 
 function OnTrade(tabTr)
-	--if 
+	--if
 end;
 
 function OnConnected()

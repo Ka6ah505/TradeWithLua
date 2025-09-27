@@ -1,11 +1,11 @@
-dofile (getScriptPath().."\\QuikTable.lua")
-dofile (getScriptPath().."\\Logging.lua")
-dofile (getScriptPath().."\\Logic_module.lua")
+dofile(getScriptPath() .. "\\QuikTable.lua")
+dofile(getScriptPath() .. "\\Logging.lua")
+dofile(getScriptPath() .. "\\Logic_module.lua")
 
 
 IsRun = false
 main_table = QTable.new()
-logger = QLogger.init(getScriptPath().."\\logs\\your_log.txt")
+logger = QLogger.init(getScriptPath() .. "\\logs\\your_log.txt")
 logic = QLogicModule
 BLACK_COLOR = RGB(0, 0, 0)
 RED_COLOR = RGB(255, 0, 0)
@@ -13,11 +13,11 @@ GREEN_COLOR = RGB(0, 255, 0)
 BLUE_COLOR = RGB(0, 0, 255)
 
 secCode = "TQBR"
-classCodes = {'GAZP','LKOH','ROSN','ALRS','CHMF'}
+classCodes = { 'GAZP', 'LKOH', 'ROSN', 'ALRS', 'CHMF' }
 store_classCode = {}
 
 function OnInit()
--- инициализация функции main
+    -- инициализация функции main
 
     main_table:AddColumn("Ticker", QTABLE_STRING_TYPE, 12)
     main_table:AddColumn("Close", QTABLE_DOUBLE_TYPE, 10)
@@ -29,12 +29,11 @@ function OnInit()
     main_table:Show()
     logger:add("Логгер открыт для записи")
 
-    -- classCodes = mysplit(getClassSecurities("TQBR"), ", ")
+    -- classCodes = Mysplit(getClassSecurities("TQBR"), ", ")
 end
 
-
 function OnStop()
--- остановка скрипта руками
+    -- остановка скрипта руками
     IsRun = false
     main_table:Clear()
     main_table:delete()
@@ -43,18 +42,16 @@ function OnStop()
     logger = nil
 end
 
-
 function OnClose()
--- закрытие терминала
+    -- закрытие терминала
     main_table:delete()
     logger:add("Логгер закрыт - терминал крашнулся")
     logger:close()
     logger = nil
 end
 
-
 function main()
--- основной поток управления
+    -- основной поток управления
     if not main_table then
         message("error!", 3)
         return
@@ -63,11 +60,11 @@ function main()
         local data_flow = ConnectToData(secCode, code, INTERVAL_D1)
         -- пропускаем если не смогли получить данные
         if data_flow == nil then
-            logger:add("не получены данные по "..code)
+            logger:add("не получены данные по " .. code)
             goto continue
         else
             store_classCode[code] = data_flow
-            logger:add("получены данные по "..code)
+            logger:add("получены данные по " .. code)
         end
         ::continue::
     end
@@ -105,7 +102,7 @@ function main()
         if main_table:IsClosed() then
             main_table:Show()
         end
-        count_line = 0
+        local count_line = 0
         for code, _ in pairs(store_classCode) do
             local size = store_classCode[code]:Size()
             local close = store_classCode[code]:C(size)
@@ -123,38 +120,36 @@ function main()
     end
 end
 
-
 -- Функция подключения к данным инструмента
 function ConnectToData(secCode, classCode, interval)
-	-- body
-	Error = nil
-	local ds, Error = CreateDataSource(secCode, classCode, interval);
+    -- body
+    Error = nil
+    local ds, Error = CreateDataSource(secCode, classCode, interval);
     local cnt_reconnect = 0
-	while (Error == "" or Error == nil) and ds:Size() == 0 do
+    while (Error == "" or Error == nil) and ds:Size() == 0 do
         sleep(500)
         cnt_reconnect = cnt_reconnect + 1
         if cnt_reconnect > 10 then
             return nil
         end
     end
-	if Error ~= "" and Error ~= nil then
-        message("Connect error to chart: "..Error, 3)
+    if Error ~= "" and Error ~= nil then
+        message("Connect error to chart: " .. Error, 3)
         return
     end
-	-- Чтобы получать новые данные без использования функции обратного вызова, а просто получать новые данные в ds и брать их оттуда по необходимости существует функция:
-	ds:SetEmptyCallback();
+    -- Чтобы получать новые данные без использования функции обратного вызова, а просто получать новые данные в ds и брать их оттуда по необходимости существует функция:
+    ds:SetEmptyCallback();
     return ds
 end
 
-
 -- Функция разделения строки по разделителю
-function mysplit(inputstr, sep)
+function Mysplit(inputstr, sep)
     if sep == nil then
-      sep = "%s"
+        sep = "%s"
     end
     local t = {}
-    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-      table.insert(t, str)
+    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+        table.insert(t, str)
     end
     return t
 end

@@ -19,9 +19,8 @@ function QTable.new()
     return q_table
 end
 
-
 -- Отобразить окно
-function QTable:Show ()
+function QTable:Show()
     CreateWindow(self.table_id)
     if self.caption ~= "" then
         SetWindowCaption(self.table_id, self.caption)
@@ -29,11 +28,9 @@ function QTable:Show ()
     self.created = true
 end
 
-
 function QTable:IsClosed()
     return IsWindowClosed(self.table_id)
 end
-
 
 function QTable:delete()
     res = DestroyTable(self.table_id)
@@ -43,8 +40,7 @@ function QTable:delete()
     message("Table is destroyed", 1)
 end
 
-
---[[ 
+--[[
 Добавить столбец
     name - имя столбца
     c_type - тип столбца (
@@ -60,8 +56,8 @@ end
     <ff> - функция форматирования
 ]]
 function QTable:AddColumn(name, c_type, width, ff)
-    local col_desc={}
-    self.curr_column=self.curr_column+1
+    local col_desc = {}
+    self.curr_column = self.curr_column + 1
     col_desc.c_type = c_type
     col_desc.format_function = ff
     col_desc.id = self.curr_column
@@ -70,30 +66,26 @@ function QTable:AddColumn(name, c_type, width, ff)
     AddColumn(self.table_id, self.curr_column, name, true, c_type, width)
 end
 
-
 function QTable:SetCaption(s)
--- Добавить заголовок
+    -- Добавить заголовок
     self.caption = s
     if not IsWindowClosed(self.table_id) then
         SetWindowCaption(self.table_id, tostring(s))
     end
 end
 
-
 function QTable:Clear()
--- очистить таблицу
+    -- очистить таблицу
     Clear(self.table_id)
 end
 
-
 function QTable:AddLine()
--- добавление строки в конец таблицы
+    -- добавление строки в конец таблицы
     return InsertRow(self.table_id, -1)
 end
 
-
 function QTable:SetValue(row, col_name, data)
--- добавить значение в клетку
+    -- добавить значение в клетку
     local col_ind = self.columns[col_name].id or nil
     if col_ind == nil then
         return false
@@ -112,7 +104,6 @@ function QTable:SetValue(row, col_name, data)
     end
 end
 
-
 function QTable:SetColor(row, col_name, background_color, font_color)
     local col_ind = self.columns[col_name].id or nil
     if col_ind == nil then
@@ -121,7 +112,6 @@ function QTable:SetColor(row, col_name, background_color, font_color)
 
     SetColor(self.table_id, row, col_ind, background_color, font_color, background_color, font_color)
 end
-
 
 function QTable:GetSize()
     return GetTableSize(self.table_id)
