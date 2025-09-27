@@ -7,3 +7,4 @@
 - [download_data](/download_data/) - лежат скрипт python для скачивания котировок с московской биржи
 - [logs](/logs) - сюда нужно писать логи
 - [models](/models/) - тут исследовательские скрипты
+- [external_lua](/external_lua/) - lua-скрипты чужого производства
