@@ -16,3 +16,4 @@ __pycache__/
 
 # poetry
 .poetry.lock
+poetry.lock
