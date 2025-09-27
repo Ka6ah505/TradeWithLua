@@ -1,3 +1,5 @@
 my_venv/
-logs/*.*
+logs/*
+!logs/
 download_data/*
+!download_data/
