@@ -8,6 +8,7 @@ main_table = QTable.new()
 local logger = QLogger.init(getScriptPath() .. "\\logs\\main_bonds_1-2y_log.txt")
 local logic = QLogicModule
 local my_bonds = {}
+local data_by_bonds = {}
 BLACK_COLOR = RGB(0, 0, 0)
 RED_COLOR = RGB(250, 128, 114)
 GREEN_COLOR = RGB(34, 139, 34)
@@ -26,8 +27,8 @@ function OnInit()
     -- инициализация функции main
 
     main_table:AddColumn("Ticker", QTABLE_STRING_TYPE, 15)  -- тикер
-    main_table:AddColumn("Offer", QTABLE_DOUBLE_TYPE, 10)   -- стоимость
-    main_table:AddColumn("Mat day", QTABLE_INT_TYPE, 10)    -- до экспир дни
+    main_table:AddColumn("Offer", QTABLE_DOUBLE_TYPE, 9)    -- стоимость
+    main_table:AddColumn("Mat day", QTABLE_INT_TYPE, 9)     -- до экспир дни
     main_table:AddColumn("Face value", QTABLE_INT_TYPE, 12) -- номинал
     main_table:AddColumn("C/per", QTABLE_DOUBLE_TYPE, 7)
     main_table:AddColumn("NKD", QTABLE_DOUBLE_TYPE, 7)
@@ -36,9 +37,11 @@ function OnInit()
     -- main_table:AddColumn("PROFIT_RUB", QTABLE_DOUBLE_TYPE, 15)
     -- main_table:AddColumn("Fee_RUB", QTABLE_DOUBLE_TYPE, 12)
     -- main_table:AddColumn("+Profit", QTABLE_DOUBLE_TYPE, 15)
-    main_table:AddColumn("Rating", QTABLE_STRING_TYPE, 9)
-    main_table:AddColumn("List level", QTABLE_INT_TYPE, 9)
+    main_table:AddColumn("Rating", QTABLE_STRING_TYPE, 8)
+    main_table:AddColumn("List level", QTABLE_INT_TYPE, 7)
     main_table:AddColumn("In pack", QTABLE_INT_TYPE, 7)
+    main_table:AddColumn("Type Coupon", QTABLE_STRING_TYPE, 10)
+    main_table:AddColumn("Offerta", QTABLE_STRING_TYPE, 11)
 
     main_table:SetCaption("Bond Screener")
     main_table:Show()
@@ -57,6 +60,7 @@ function OnInit()
     logger:add(tostring(#list_all_bonds["TQOB"]))
 
     my_bonds = Bonds_depo_limit()
+    data_by_bonds = parse_bonds_file("rating_all.txt")
 end
 
 function OnStop()
@@ -128,13 +132,16 @@ function main()
                     3
                 )
 
-                _rating = getRaiting(_code)
+                _bond = data_by_bonds[_code] --getRaiting(_code)
+                _type_coupon = (_bond ~= nil and _bond.type_coupon or '---')
+                _offerta = (_bond ~= nil and _bond.offer or '---')
+                _rating = (_bond ~= nil and _bond.rating or '---')
                 _is_rating = is_cool_rationg(_rating)
                 _in_pack_count = my_bonds[_code] --in_pack_count(_code)
 
                 if (
                         tonumber(_mat_day) > 100.0 --and tonumber(_mat_day) < 1095.0
-                        and (YTM > 16 and YTM < 50)
+                        and (YTM > 18 and YTM < 50)
                         and _offer <= 102 and _is_rating
                         and tonumber(_couppon_period) < 190
                     ) then
@@ -154,6 +161,8 @@ function main()
                     main_table:SetValue(count_line, "Rating", _rating)
                     main_table:SetValue(count_line, "List level", _list_level)
                     main_table:SetValue(count_line, "In pack", _in_pack_count)
+                    main_table:SetValue(count_line, "Type Coupon", _type_coupon)
+                    main_table:SetValue(count_line, "Offerta", _offerta)
 
                     local color = getColor(YTM, 18, 23, 25, false)
                     main_table:SetColor(count_line, "YTM", color, BLACK_COLOR, color, BLACK_COLOR)
@@ -2007,4 +2016,27 @@ function getRaiting(ticker)
     end
     return '---'
     -- return ticker
+end
+
+function parse_bonds_file(filename)
+    local bonds = {}
+
+    for line in io.lines(filename) do
+        -- Исправленное регулярное выражение - добавлен + в допустимые символы для rating
+        local isin, type_coupon, rating, offer =
+            line:match('^(%w+)={type_coupon=(%w+), rating=([%w%+%-]+), offer=([^}]+)}')
+
+        if isin then
+            bonds[isin] = {
+                type_coupon = type_coupon,
+                rating = rating,
+                offer = (offer ~= "-" and offer or nil)
+            }
+        else
+            -- Для отладки: выводим строки, которые не удалось распарсить
+            print("Не удалось распарсить строку: " .. line)
+        end
+    end
+
+    return bonds
 end
