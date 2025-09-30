@@ -27,7 +27,7 @@ class Bond:
 
 
 async def get_isin(text):
-    result = re.findall(r"RU[0-9A-Z]*", text)
+    result = re.findall(r"[RU|SU][0-9A-Z]*", text)
     return result[0] if len(result) > 0 else ""
 
 
