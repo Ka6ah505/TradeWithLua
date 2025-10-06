@@ -14,9 +14,10 @@ BLUE_COLOR = RGB(0, 0, 255)
 
 
 pairs_ = {
-    { fut = 'VBM5', market_fut = 'SPBFUT', spot = 'VTBR', market_spot = 'TQBR' },
-    { fut = 'TBM5', market_fut = 'SPBFUT', spot = 'T',    market_spot = 'TQBR' },
-    { fut = 'CRM5', market_fut = 'SPBFUT', spot = 'CNYRUB_TOM', market_spot = 'CETS' },
+    { fut = 'VBZ5', market_fut = 'SPBFUT', spot = 'VTBR',       market_spot = 'TQBR' },
+    { fut = 'TBZ5', market_fut = 'SPBFUT', spot = 'T',          market_spot = 'TQBR' },
+    { fut = 'SRZ5', market_fut = 'SPBFUT', spot = 'SBER',       market_spot = 'TQBR' },
+    { fut = 'CRZ5', market_fut = 'SPBFUT', spot = 'CNYRUB_TOM', market_spot = 'CETS' },
 }
 store_classCode = {}
 

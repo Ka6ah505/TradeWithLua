@@ -94,26 +94,22 @@ function main()
             main_table:SetColor(i, "LR3",
                 rising(rl5, rl4, rl3),
                 BLACK_COLOR,
-                rising(rl5, rl4, rl3),
-                BLACK_COLOR
+                false
             )
             main_table:SetColor(i, "LR2",
                 rising(rl4, rl3, rl2),
                 BLACK_COLOR,
-                rising(rl4, rl3, rl2),
-                BLACK_COLOR
+                false
             )
             main_table:SetColor(i, "LR1",
                 rising(rl3, rl2, rl1),
                 BLACK_COLOR,
-                rising(rl3, rl2, rl1),
-                BLACK_COLOR
+                false
             )
             main_table:SetColor(i, "LR0",
                 rising(rl2, rl1, rl0),
                 BLACK_COLOR,
-                rising(rl2, rl1, rl0),
-                BLACK_COLOR
+                false
             )
 
             -- заполняем строку данными
@@ -124,9 +120,6 @@ function main()
             main_table:SetValue(i, "LR1", rl1)
             main_table:SetValue(i, "LR0", rl0)
         end
-        -- if i > 20 then
-        --     main_table:SetColor(id_row, "test1",RED_COLOR, BLACK_COLOR, RED_COLOR, BLACK_COLOR)
-        -- end
 
         sleep(3000)
     end

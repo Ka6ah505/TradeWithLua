@@ -143,7 +143,7 @@ function main()
                         tonumber(_mat_day) > 100.0 --and tonumber(_mat_day) < 1095.0
                         and (YTM > 15 and YTM < 50)
                         and _offer <= 102 and _is_rating
-                        and tonumber(_couppon_period) < 190
+                        and tonumber(_couppon_period) < 100
                         and _curr == 'SUR' -- только рублевые бонды
                     ) then
                     count_line = count_line + 1
@@ -162,11 +162,11 @@ function main()
                     main_table:SetValue(count_line, "Offerta", _offerta)
 
                     local color = getColor(YTM, 16, 21, 25, false)
-                    main_table:SetColor(count_line, "YTM", color, BLACK_COLOR, color, BLACK_COLOR)
+                    main_table:SetColor(count_line, "YTM", color, BLACK_COLOR, false)
                     local listing_color = getColor(_list_level, 0, 1, 2, true)
-                    main_table:SetColor(count_line, "List level", listing_color, BLACK_COLOR, color, BLACK_COLOR)
+                    main_table:SetColor(count_line, "List level", listing_color, BLACK_COLOR, false)
                     -- color = getColor(_profit_coupon_percent, 5, 10, 15)
-                    -- main_table:SetColor(count_line, "cYY_%", color, BLACK_COLOR, color, BLACK_COLOR)
+                    -- main_table:SetColor(count_line, "cYY_%", color, BLACK_COLOR)
                 end
             end
         end

@@ -104,13 +104,16 @@ function QTable:SetValue(row, col_name, data)
     end
 end
 
-function QTable:SetColor(row, col_name, background_color, font_color)
+function QTable:SetColor(row, col_name, background_color, font_color, all_row)
     local col_ind = self.columns[col_name].id or nil
     if col_ind == nil then
         return false
     end
-
-    SetColor(self.table_id, row, col_ind, background_color, font_color, background_color, font_color)
+    if all_row == false  or all_row == nil then
+        SetColor(self.table_id, row, col_ind, background_color, font_color, background_color, font_color)
+    else
+        SetColor(self.table_id, row, QTABLE_NO_INDEX, background_color, font_color, background_color, font_color)
+    end
 end
 
 function QTable:GetSize()

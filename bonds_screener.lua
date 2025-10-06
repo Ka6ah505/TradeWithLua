@@ -124,9 +124,9 @@ function main()
                     main_table:SetValue(count_line, "Rating", getRaiting(_code))
 
                     local color = getColor(_profit_percent, 5, 10, 15)
-                    main_table:SetColor(count_line, "YY_%", color, BLACK_COLOR, color, BLACK_COLOR)
+                    main_table:SetColor(count_line, "YY_%", color, BLACK_COLOR, false)
                     color = getColor(_profit_coupon_percent, 5, 10, 15)
-                    main_table:SetColor(count_line, "cYY_%", color, BLACK_COLOR, color, BLACK_COLOR)
+                    main_table:SetColor(count_line, "cYY_%", color, BLACK_COLOR, false)
                 end
             end
         end

@@ -30,7 +30,7 @@ OnInit = function()
     sum_pai = rest_of_money + st_sum_p_pr + bnd_sum_p_pr + my_etf[1].qty_cur * my_etf[1].awg_position_price
     e_pai = round(my_etf[1].qty_cur * my_etf[1].awg_position_price / sum_pai * 100, 1)
     sum_profit = st_sum_prof + bnd_sum_prof + my_etf[1].last * my_etf[1].qty_cur -
-    my_etf[1].qty_cur * my_etf[1].awg_position_price
+        my_etf[1].qty_cur * my_etf[1].awg_position_price
     s_pai = round(st_sum_p_pr / sum_pai * 100, 1)
     bnd_pai = round(bnd_sum_p_pr / sum_pai * 100, 1)
     rest_pai = round(rest_of_money / sum_pai * 100, 1)
@@ -66,7 +66,7 @@ main = function()
         sum_pai = rest_of_money + st_sum_p_pr + bnd_sum_p_pr + my_etf[1].qty_cur * my_etf[1].awg_position_price
         e_pai = round(my_etf[1].qty_cur * my_etf[1].awg_position_price / sum_pai * 100, 1)
         sum_profit = st_sum_prof + bnd_sum_prof + my_etf[1].last * my_etf[1].qty_cur -
-        my_etf[1].qty_cur * my_etf[1].awg_position_price
+            my_etf[1].qty_cur * my_etf[1].awg_position_price
         s_pai = round(st_sum_p_pr / sum_pai * 100, 1)
         bnd_pai = round(bnd_sum_p_pr / sum_pai * 100, 1)
         rest_pai = round(rest_of_money / sum_pai * 100, 1)
@@ -82,11 +82,11 @@ main = function()
         SetColor(t1_main, 10, 1, QTABLE_DEFAULT_COLOR, yelow, QTABLE_DEFAULT_COLOR, QTABLE_DEFAULT_COLOR)
         SetWindowCaption(t1_main,
             tostring("  " ..
-            os.date("%d.%m.%Y") ..
-            "   " ..
-            os.date("%X", os.time()) ..
-            "       \xe0\xea\xf6.: " ..
-            s_pai ..
+                os.date("%d.%m.%Y") ..
+                "   " ..
+                os.date("%X", os.time()) ..
+                "       \xe0\xea\xf6.: " ..
+                s_pai ..
             "%      \xee\xe1\xeb.: " .. bnd_pai .. "%      lqdt: " .. e_pai .. "%      \xca\xfd\xf8: " .. rest_pai .. "%"))
         local r0_4 = start_update
         if r0_4 then
@@ -185,7 +185,7 @@ PrintStocks = function(r0_7)
             SetCell(t1_main, r4_7 + 1, 5, tostring(round(my.awg_position_price, my.sec_scale)))
             SetCell(t1_main, r4_7 + 1, 6,
                 tostring("  " ..
-                math.floor(my.qty_cur / my.lotsize) .. "                  " .. math.floor(my.qty_cur) .. " \xf8\xf2."))
+                    math.floor(my.qty_cur / my.lotsize) .. "                  " .. math.floor(my.qty_cur) .. " \xf8\xf2."))
             SetCell(t1_main, r4_7 + 1, 7, tostring(delimiter(round(my.pur_price, 2))))
             if my.profit_proc > 0 then
                 SetColor(t1_main, r4_7 + 1, 8, QTABLE_DEFAULT_COLOR, green, QTABLE_DEFAULT_COLOR, QTABLE_DEFAULT_COLOR)
@@ -232,7 +232,7 @@ PrintBonds = function(r0_8)
                 tostring("    " .. round(my.proc_year, 2) .. "           " .. round(my.mycoupon, 2) .. " \xf0\xf3\xe1."))
             SetCell(t1_main, r4_8 + 1, 9,
                 tostring("    " ..
-                delimiter(round(my.profit, 2)) .. "                " .. round(my.profit_proc, 2) .. " %"))
+                    delimiter(round(my.profit, 2)) .. "                " .. round(my.profit_proc, 2) .. " %"))
             SetCell(t1_main, r4_8 + 1, 10, tostring(round(my.last, my.sec_scale)))
             SetCell(t1_main, r4_8 + 1, 11,
                 tostring("   " .. math.floor(my.days_to_mat_date) .. "        " .. my.mat_date))
@@ -245,7 +245,7 @@ PrintBonds = function(r0_8)
     SetCell(t1_main, bnd_kol_row + 2, 4, tostring(delimiter(round(bnd_sum_p_pr, 2))))
     SetCell(t1_main, bnd_kol_row + 2, 9,
         tostring("   " ..
-        delimiter(round(bnd_sum_prof, 2)) .. "               " .. round(bnd_sum_prof / bnd_sum_p_pr * 100, 2) .. " %"))
+            delimiter(round(bnd_sum_prof, 2)) .. "               " .. round(bnd_sum_prof / bnd_sum_p_pr * 100, 2) .. " %"))
 end
 PrintETF = function(r0_9)
     -- line: [295, 324] id: 9
@@ -270,11 +270,11 @@ PrintETF = function(r0_9)
             SetCell(t1_main, r4_9 + 1, 8, tostring(r0_9[r4_9].last))
             SetCell(t1_main, r4_9 + 1, 9,
                 tostring(delimiter(round(
-                r0_9[r4_9].last * r0_9[r4_9].qty_cur - r0_9[r4_9].qty_cur * r0_9[r4_9].awg_position_price, 2))))
+                    r0_9[r4_9].last * r0_9[r4_9].qty_cur - r0_9[r4_9].qty_cur * r0_9[r4_9].awg_position_price, 2))))
             SetCell(t1_main, r4_9 + 1, 10,
                 tostring(round(
-                (r0_9[r4_9].last * r0_9[r4_9].qty_cur - r0_9[r4_9].qty_cur * r0_9[r4_9].awg_position_price) /
-                r0_9[r4_9].qty_cur * r0_9[r4_9].awg_position_price * 100, 2)))
+                    (r0_9[r4_9].last * r0_9[r4_9].qty_cur - r0_9[r4_9].qty_cur * r0_9[r4_9].awg_position_price) /
+                    r0_9[r4_9].qty_cur * r0_9[r4_9].awg_position_price * 100, 2)))
         else
             break
         end

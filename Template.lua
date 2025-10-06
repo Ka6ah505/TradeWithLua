@@ -116,50 +116,42 @@ function main()
                 -- main_table:SetColor(i, "LR3",
                 --     raise(rl5, rl4, rl3),
                 --     BLACK_COLOR,
-                --     raise(rl5, rl4, rl3),
-                --     BLACK_COLOR
+                --     false
                 -- )
                 -- main_table:SetColor(i, "LR2",
                 --     raise(rl4, rl3, rl2),
                 --     BLACK_COLOR,
-                --     raise(rl4, rl3, rl2),
-                --     BLACK_COLOR
+                --     false
                 -- )
                 -- main_table:SetColor(i, "LR1",
                 --     raise(rl3, rl2, rl1),
                 --     BLACK_COLOR,
-                --     raise(rl3, rl2, rl1),
-                --     BLACK_COLOR
+                --     false
                 -- )
                 -- main_table:SetColor(i, "LR0",
                 --     raise(rl2, rl1, rl0),
                 --     BLACK_COLOR,
-                --     raise(rl2, rl1, rl0),
-                --     BLACK_COLOR
+                --     false
                 -- )
                 main_table:SetColor(count_line, "LR3",
                     rising(rl5, rl4, rl3),
                     BLACK_COLOR,
-                    rising(rl5, rl4, rl3),
-                    BLACK_COLOR
+                    false
                 )
                 main_table:SetColor(count_line, "LR2",
                     rising(rl4, rl3, rl2),
                     BLACK_COLOR,
-                    rising(rl4, rl3, rl2),
-                    BLACK_COLOR
+                    false
                 )
                 main_table:SetColor(count_line, "LR1",
                     rising(rl3, rl2, rl1),
                     BLACK_COLOR,
-                    rising(rl3, rl2, rl1),
-                    BLACK_COLOR
+                    false
                 )
                 main_table:SetColor(count_line, "LR0",
                     rising(rl2, rl1, rl0),
                     BLACK_COLOR,
-                    rising(rl2, rl1, rl0),
-                    BLACK_COLOR
+                    false
                 )
                 -- заполняем строку данными
                 -- main_table:SetValue(i, "Ticker", code)
@@ -177,7 +169,7 @@ function main()
             end
         end
         -- if i > 20 then
-        --     main_table:SetColor(id_row, "test1",RED_COLOR, BLACK_COLOR, RED_COLOR, BLACK_COLOR)
+        --     main_table:SetColor(id_row, "test1",RED_COLOR, BLACK_COLOR, false)
         -- end
 
         sleep(3000)
