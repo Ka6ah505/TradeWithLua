@@ -15,7 +15,7 @@ store_classCode = {}
 function OnInit()
 -- инициализация функции main
     -- logger:add("Логгер открыт для записи")
-    logger:add("date;time;open;high;low;close;volume", false)
+    logger:add("date;time;open;high;low;close;volume;sar", false)
 end
 
 
@@ -43,7 +43,7 @@ function main()
             store_classCode[code] = ConnectToData(secCode, code)
         end
         size = store_classCode[classCode]:Size()
-        -- tt_10, n, l = getCandlesByIndex("tt_SPBFUT_10", 0, 0, size)
+        sar, n, l = getCandlesByIndex("SAR", 0, 0, size)
         -- tt_20, n, l = getCandlesByIndex("tt_SPBFUT_10", 0, 0, size)
         n = store_classCode[classCode]:Size()
         for i = 1, n do -- цикл от 1 до 10 с шагом 1
@@ -56,6 +56,7 @@ function main()
             local my_time, my_date = concatDate(store_classCode[classCode]:T(i))
             data["time"] = my_time
             data["date"] = my_date
+            data["sar"] = sar[i-1].close
             -- data['linReg10'] = tt_10[i-1].close
             -- data['linReg20'] = tt_20[i-1].close
             local row = createRow(data, ";")
@@ -89,7 +90,7 @@ end
 
 function createRow(data, sep)
     -- date, time, open, high, low, close, volume, linReg
-    return data.date..sep..data.time..sep..data.open..sep..data.high..sep..data.low..sep..data.close..sep..data.volume --..sep..data.linReg10..sep..data.linReg20
+    return data.date..sep..data.time..sep..data.open..sep..data.high..sep..data.low..sep..data.close..sep..data.volume..sep..data.sar --..sep..data.linReg10..sep..data.linReg20
 end
 
 

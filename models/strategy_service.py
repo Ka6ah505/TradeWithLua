@@ -189,3 +189,65 @@ def run_backtest(
         raise
     
     return results
+
+
+def run_backtest_sar_ma(
+    df: pd.DataFrame,
+    date_start: str,
+    median_range: range = range(25, 31, 5),
+    atr_range: range = range(4, 6),
+    coef_prof_range: range = range(2, 4),
+    coef_loss_range: range = range(2, 4),
+    filename: str = 'progress.pkl',
+    is_save: bool = False,
+    direction: Tuple = (True, True),
+) -> Dict:
+    """Основная функция для запуска бэктеста по стратегии SAR и MA"""
+    results = dict()
+    if is_save:
+        results = load_progress(filename=filename)
+    
+    try:
+        for period_ema in tqdm(median_range, desc="EMA Progress", position=1, leave=False):
+            df['median'] = MEDIAN(df['close'], period=period_ema)
+            df['p99'] = PERCENTILE(df['close'], period=period_ema, perc=0.99)
+            df['p01'] = PERCENTILE(df['close'], period=period_ema, perc=0.01)
+            
+
+            for period_atr in atr_range:
+                df['atr'] = ATR(df, period=period_atr)
+                df_work = df.iloc[period_ema:]  # Убираем первые нерелевантные строки
+                if date_start != '':
+                    df_work = df_work.loc[date_start:,:]  # начинае с начала периода
+
+                opt_df = optimize_df(df_work)
+
+                for coef_prof in coef_prof_range:
+                    for coef_loss in coef_loss_range:
+                        if coef_prof/coef_loss > 1.4:
+                            key = f'{period_ema=}:{period_atr=}:{coef_prof=}:{coef_loss=}'
+                            
+                            # Пропускаем уже рассчитанные параметры
+                            if key in results:
+                                continue
+                                
+                            positions = process_positions(
+                                opt_df,
+                                coef_prof,
+                                coef_loss,
+                                allow_long=direction[0],
+                                allow_short=direction[1],
+                            )
+                            results[key] = positions
+                            
+                            # Сохраняем прогресс после каждой итерации
+                            if is_save:
+                                save_progress(results, filename)
+    except Exception as e:
+        print(f"Произошла ошибка: {str(e)}")
+        print("Сохраняем текущий прогресс перед выходом...")
+        if is_save:
+            save_progress(results, filename)
+        raise
+    
+    return results

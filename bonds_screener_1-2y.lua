@@ -49,12 +49,12 @@ function OnInit()
 
     -- Получам список доступных облигаций
     local list__bonds_corp = Mysplit(getClassSecurities("TQCB"), ", ")
-    list__bonds_corp = getOnlyNecval(list__bonds_corp, "TQCB")
+    -- list__bonds_corp = getOnlyNecval(list__bonds_corp, "TQCB")
     list_all_bonds["TQCB"] = list__bonds_corp
     logger:add(tostring(#list_all_bonds["TQCB"]))
 
     local list__bonds_fed = Mysplit(getClassSecurities("TQOB"), ", ")
-    list__bonds_fed = getOnlyNecval(list__bonds_fed, "TQOB")
+    -- list__bonds_fed = getOnlyNecval(list__bonds_fed, "TQOB")
     list_all_bonds["TQOB"] = list__bonds_fed
     logger:add(tostring(#list_all_bonds["TQOB"]))
 

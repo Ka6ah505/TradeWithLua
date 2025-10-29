@@ -7,6 +7,7 @@ IsRun = false
 main_table = QTable.new()
 local logger = QLogger.init(getScriptPath() .. "\\logs\\main_bonds_log.txt")
 local logic = QLogicModule
+local data_by_bonds = {}
 BLACK_COLOR = RGB(0, 0, 0)
 RED_COLOR = RGB(250, 128, 114)
 GREEN_COLOR = RGB(34, 139, 34)
@@ -42,16 +43,18 @@ function OnInit()
     logger:add("Логгер открыт для записи")
     -- Получам список доступных облигаций
     local list__bonds_corp = Mysplit(getClassSecurities("TQCB"), ", ")
-    list__bonds_corp = getOnlyNecval(list__bonds_corp, "TQCB")
+    -- list__bonds_corp = getOnlyNecval(list__bonds_corp, "TQCB")
     list_all_bonds["TQCB"] = list__bonds_corp
     -- list__bonds_corp = {}
     logger:add(tostring(#list_all_bonds["TQCB"]))
     local list__bonds_fed = Mysplit(getClassSecurities("TQOB"), ", ")
-    list__bonds_fed = getOnlyNecval(list__bonds_fed, "TQOB")
+    -- list__bonds_fed = getOnlyNecval(list__bonds_fed, "TQOB")
     list_all_bonds["TQOB"] = list__bonds_fed
 
     -- mergeTables(list__bonds_corp, list__bonds_fed)
     logger:add(tostring(#list_all_bonds["TQOB"]))
+
+    data_by_bonds = parse_bonds_file("rating_all.txt")
 end
 
 function OnStop()
@@ -101,13 +104,15 @@ function main()
                     2
                 )
                 _all_profit = _profit_rub + (_coupon - _nkd) - commission
+                _bond = data_by_bonds[_code] --getRaiting(_code)
+                _rating = (_bond ~= nil and _bond.rating or '---')
 
                 if (
-                        tonumber(_mat_day) > 7.0 and tonumber(_mat_day) < 100.0
-                        and (_coupon >= _nkd)
-                        and (_profit_percent > 0 and _profit_percent < 50)
+                    tonumber(_mat_day) > 7.0 and tonumber(_mat_day) < 100.0
+                    and (_coupon >= _nkd)
+                    and (_profit_percent > 0 and _profit_percent < 50)
                         and ((_profit_percent + _profit_coupon_percent) > 15)
-                    ) then
+                ) then
                     count_line = count_line + 1
                     main_table:AddLine()
                     main_table:SetValue(count_line, "Ticker", shortname)
@@ -121,7 +126,7 @@ function main()
                     main_table:SetValue(count_line, "PROFIT_RUB", _profit_rub)
                     main_table:SetValue(count_line, "Fee_RUB", commission)
                     main_table:SetValue(count_line, "+Profit", _all_profit)
-                    main_table:SetValue(count_line, "Rating", getRaiting(_code))
+                    main_table:SetValue(count_line, "Rating", _rating)
 
                     local color = getColor(_profit_percent, 5, 10, 15)
                     main_table:SetColor(count_line, "YY_%", color, BLACK_COLOR, false)
@@ -219,113 +224,24 @@ function getColor(value, low, mid, high)
     end
 end
 
-function getRaiting(ticker)
-    ticker = string.lower(ticker)
-    data = {
-        { 'RU000A100EG3', 'AAA' },
-        { 'RU000A105FS4', 'BBB' },
-        { 'RU000A105K85', 'AA' },
-        { 'RU000A105B03', 'AA' },
-        { 'RU000A106AJ2', 'AA' },
-        { 'RU000A105HN1', 'A' },
-        { 'RU000A102H91', 'AA' },
-        { 'RU000A102GC3', 'B' },
-        { 'RU000A102G50', 'A' },
-        { 'RU000A109ZK1', 'AA' },
-        { 'RU000A109X45', 'A' },
-        { 'RU000A101WE8', 'AA' },
-        { 'RU000A105M83', 'AA' },
-        { 'RU000A107XF0', 'AA' },
-        { 'RU000A102B97', 'BB' },
-        { 'RU000A0JVUN2', 'A' },
-        { 'RU000A0JVUP7', 'A' },
-        { 'RU000A105Q89', 'BBB' },
-        { 'RU000A100Z91', 'BBB' },
-        { 'RU000A0JVWD9', 'BBB' },
-        { 'RU000A0JVWJ6', 'BBB' },
-        { 'RU000A0JW1P8', 'BBB' },
-        { 'RU000A105KP0', 'AA' },
-        { 'RU000A105GE2', 'AA' },
-        { 'RU000A105JN7', 'CCC' },
-        { 'RU000A105EP3', 'B' },
-        { 'RU000A1098W8', 'AA' },
-        { 'RU000A105MP6', 'BB-' },
-        { 'RU000A0JVZB6', 'A' },
-        { 'RU000A105PP9', 'BB' },
-        { 'RU000A105PR5', 'BB' },
-        { 'RU000A105FU0', 'BB' },
-        { 'RU000A0ZZZV1', 'B+' },
-        { 'RU000A0ZZXZ7', 'BB' },
-        { 'RU000A1029G6', 'BBB' },
-        { 'RU000A102KT9', 'BBB' },
-        { 'RU000A0ZYCD1', 'BBB' },
-        { 'KG000A3LSJ06', '' },
-        { 'RU000A0ZZR33', 'A' },
-        { 'RU000A10AA02', 'B+' },
-        { 'RU000A101228', 'AA' },
-        { 'RU000A106BQ5', 'AA' },
-        { 'RU000A105KQ8', 'AA' },
-        { 'RU000A102GU5', 'A' },
-        { 'RU000A102895', 'A' },
-        { 'RU000A102DR8', 'BB' },
-        { 'RU000A105AX5', 'B+' },
-        { 'RU000A1047S3', 'BB' },
-        { 'RU000A0JW0S4', 'A' },
-        { 'RU000A108AC3', 'A' },
-        { 'RU000A104735', 'BB' },
-        { 'RU000A105JG1', 'A' },
-        { 'RU000A102M37', '' },
-        { 'RU000A0JVUS1', 'BBB' },
-        { 'RU000A0JVXS5', 'BBB' },
-        { 'RU000A1010M4', 'AA' },
-        { 'RU000A0JVW71', 'AA' },
-        { 'RU000A1089T3', 'AA' },
-        { 'RU000A0JVYG8', 'AA' },
-        { 'RU000A0JUAG0', 'B' },
-        { 'RU000A0JVWB3', 'AA' },
-        { 'RU000A105L01', 'AA' },
-        { 'RU000A102H83', 'B+' },
-        { 'RU000A0JVWA5', 'BBB' },
-        { 'RU000A0JVUY9', 'BBB' },
-        { 'RU000A1029A9', 'AA' },
-        { 'RU000A1077Y8', 'AA' },
-        { 'RU000A101541', 'AA' },
-        { 'RU000A1028G8', 'AA' },
-        { 'RU000A10A3R1', 'AA' },
-        { 'RU000A105HC4', 'AA' },
-        { 'RU000A105CL6', 'B' },
-        { 'RU000A105BW5', 'CCC' },
-        { 'RU000A102FQ5', 'AA' },
-        { 'RU000A1040J7', 'AA' },
-        { 'RU000A1040Y6', 'AA' },
-        { 'RU000A0ZYDU3', 'A' },
-        { 'RU000A105CS1', 'BBB' },
-        { 'RU000A105C93', 'B' },
-        { 'RU000A0JVUK8', 'BBB' },
-        { 'RU000A0JVXZ0', 'BBB' },
-        { 'RU000A105P07', 'CCC' },
-        { 'RU000A0ZYJ18', 'BB' },
-        { 'RU000A102LR1', 'BB-' },
-        { 'RU000A0ZYDD9', 'AA' },
-        { 'RU000A102CX8', 'B+' },
-        { 'RU000A105Q63', 'BBB' },
-        { 'RU000A0ZZQQ0', 'BB' },
-        { 'RU000A104TG3', 'CCC' },
-        { 'RU000A102LD1', 'A' },
-        { 'RU000A105C28', 'A' },
-        { 'RU000A107D74', 'BB-' },
-        { 'RU000A106656', 'A' },
-        { 'RU000A105PK0', 'BB' },
-        { 'RU000A10AUY6', 'AA' },
-        { 'RU000A10ATB6', 'B' },
-        { 'RU000A10BJH2', 'AA' },
-        { 'RU000A10BSV4', 'AA' },
-    }
-    for _, r in pairs(data) do
-        if string.lower(r[1]) == ticker then
-            return r[2]
+function parse_bonds_file(filename)
+    local bonds = {}
+
+    for line in io.lines(filename) do
+        -- Исправленное регулярное выражение - используем [%w%+%-] для type_coupon
+        local isin, type_coupon, rating, offer =
+            line:match('^(%w+)={type_coupon=([%w%+%-]+), rating=([%w%+%-]+), offer=([^}]+)}')
+
+        if isin then
+            bonds[isin] = {
+                type_coupon = type_coupon,
+                rating = rating,
+                offer = (offer ~= "-" and offer or nil)
+            }
+        else
+            message("Не удалось распарсить строку: " .. line, 2)
         end
     end
-    return '---'
-    -- return ticker
+
+    return bonds
 end

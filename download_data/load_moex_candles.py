@@ -146,7 +146,6 @@ class MoexCandlesLoader:
                 current_start = current_end
             
             current_end = min(current_start + chunk_delta, end_date)
-            print(current_start, current_end)
             if current_start == current_end:
                 break
         if attempt >= max_attempts:
