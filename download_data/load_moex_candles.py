@@ -181,13 +181,13 @@ if __name__ == "__main__":
     loader = MoexCandlesLoader()
     for tiker in tikers:
         try:
-            print('Грузим: ', tiker)
+            print('\nГрузим: ', tiker)
             # Загрузка дневных данных за 3 года
             df = loader.load_candles(
                 security=tiker,
                 interval=TF['10 мин'],
                 start_date='2024-01-01',
-                end_date='2025-09-30',
+                end_date='2025-11-30',
             )
 
             df = loader.reformated_df(df)
@@ -195,7 +195,7 @@ if __name__ == "__main__":
             """
             Сохранение в первый раз
             """
-            print(f'\nЗагружено {len(df)} свечей')
+            print(f'Загружено {len(df)} свечей')
 
             if not os.path.exists(f'download_data/{tiker}'):
                 os.mkdir(f'download_data/{tiker}')
@@ -233,6 +233,8 @@ if __name__ == "__main__":
         except Exception as err:
             print(err)
             trash.append(tiker)
+        finally:
+            print('--------------')
 
     if len(trash) > 0:
         print('Не выгрузил: ', trash)

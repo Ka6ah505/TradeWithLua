@@ -13,7 +13,8 @@ function main()
     start_monitoring()
 
     -- Основной цикл
-    while isWindowClosed(tbl) == 0 do
+    -- while isWindowClosed(tbl) == 0 do
+    while true do
         sleep(1000)
         update_table()
     end

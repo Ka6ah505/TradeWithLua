@@ -103,10 +103,10 @@ function main()
                 local shortname, _offer, _mat_day, _face_value, _coupon_value, _nkd, _couppon_period, _code, _list_level, _curr =
                     getDataByBond(classCode, v)
 
-                -- _profit_percent = round(
-                --     (((365 / _couppon_period) * _coupon_value) * 100) / ((_offer * _face_value) / 100) ,
-                --     3
-                -- )
+                YTM = round(
+                    (((365 / _couppon_period) * _coupon_value) * 100) / ((_offer * _face_value) / 100) ,
+                    3
+                ) -- доходность как на смартлабе
 
                 -- _face_value - номинал (в рублях)
                 -- _coupon_value - размер купона (в рублях)
@@ -119,7 +119,7 @@ function main()
                 local P = ((_offer * _face_value) / 100) + _nkd                 -- цена покупки (включая НКД)
                 local d = _mat_day                                              -- дней до погашения
 
-                -- _profit_percent = round(
+
                 -- local YTM = round(
                 --     (
                 --         (((365 / _couppon_period) - 1) * _coupon_value + (_coupon_value - _nkd)) * 100
@@ -127,10 +127,10 @@ function main()
                 --     3
                 -- )
                 -- Простая доходность к погашению
-                local YTM = round(
-                    ((N + C - P) / P) * 365 / d * 100,
-                    3
-                )
+                -- local YTM = round(
+                --     ((N + C - P) / P) * 365 / d * 100,
+                --     3
+                -- )
 
                 _bond = data_by_bonds[_code] --getRaiting(_code)
                 _type_coupon = (_bond ~= nil and _bond.type_coupon or '---')
@@ -140,12 +140,14 @@ function main()
                 _in_pack_count = my_bonds[_code] --in_pack_count(_code)
 
                 if (
-                        tonumber(_mat_day) > 100.0 --and tonumber(_mat_day) < 1095.0
-                        and (YTM > 15 and YTM < 50)
-                        and _offer <= 102 and _is_rating
-                        and tonumber(_couppon_period) < 100
-                        and _curr == 'SUR' -- только рублевые бонды
-                    ) then
+                    tonumber(_mat_day) > 100.0 --and tonumber(_mat_day) < 1095.0
+                    and (YTM > 13 and YTM < 30)
+                    and _offer <= 102
+                    and _is_rating
+                    and tonumber(_couppon_period) < 190
+                    -- and tonumber(_couppon_period) < 100
+                    and _curr == 'SUR' -- только рублевые бонды
+                ) then
                     count_line = count_line + 1
                     main_table:AddLine()
                     main_table:SetValue(count_line, "Ticker", shortname)
@@ -268,7 +270,7 @@ function getColor(value, low, mid, high, invert)
 end
 
 function is_cool_rating(raing)
-    local items = { "AAA", "A", "AA", "BBB", "XXX", "", "---" }
+    local items = { "AAA","AA", "XXX"}--, "",  "---", "A" }
     for _, v in pairs(items) do
         if v == raing then
             return true

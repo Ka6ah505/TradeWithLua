@@ -14,11 +14,16 @@ GREEN_COLOR = RGB(0, 255, 0)
 BLUE_COLOR = RGB(0, 0, 255)
 
 secCodes = {}
+-- secCodes["TQBR"] = {
+--     'AFLT', 'CHMF', 'GMKN', 'LEAS', 'LKOH', 'MOEX', 'MTSS', 'NLMK', 'NVTK',
+--     'PIKK', 'ROSN', 'RTKM', 'SBER', 'SELG', 'SMLT', 'TRNFP'
+-- }
+-- 2024-2025 ноябрь
 secCodes["TQBR"] = {
-    'SBER','T','RNFT','GAZP','LKOH','X5','SMLT','PIKK','ROSN','MTLR','NVTK',
-    'VTBR','MOEX','GMKN','AFKS','YDEX','VKCO','TRNFP','ALRS','CHMF'
+    'AFKS', 'AFLT', 'ALRS', 'CHMF', 'CNRU', 'ENPG', 'FLOT', 'LKOH', 'MOEX',
+    'RASP', 'ROSN', 'RTKM', 'RUAL', 'SMLT', 'VTBR'
 }
-secCodes["SPBFUT"] = {'GLDRUBF', 'IMOEXF', 'CNYRUBF', 'VBZ5', 'NRZ5', 'YDZ5'}
+secCodes["SPBFUT"] = {'GLDRUBF', 'IMOEXF', 'CNYRUBF', 'VBZ5', 'NRZ5', 'YDH6'}
 store_classCode = {}
 translate = {
     tiker = '\xd2\xe8\xea\xe5\xf0',

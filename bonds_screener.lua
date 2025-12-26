@@ -111,7 +111,8 @@ function main()
                     tonumber(_mat_day) > 7.0 and tonumber(_mat_day) < 100.0
                     and (_coupon >= _nkd)
                     and (_profit_percent > 0 and _profit_percent < 50)
-                        and ((_profit_percent + _profit_coupon_percent) > 15)
+                    and ((_profit_percent + _profit_coupon_percent) > 15)
+                    and (_ask > 20)
                 ) then
                     count_line = count_line + 1
                     main_table:AddLine()

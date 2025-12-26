@@ -21,7 +21,7 @@ translate = {
 }
 
 secCode = 'TQBR'
-classCodes = { 
+classCodes = {
     'MSNG', 'GAZP', 'LKOH', 'SIBN', 'ROSN', 'SBER', 'TATN', 'NVTK',
     'IRAO', 'SBERP', 'PHOR', 'SNGS', 'TRNFP', 'VTBR', 'FEES', 'MVID',
     'RASP', 'AFLT', 'MAGN', 'ALRS', 'MTSS', 'MOEX', 'RTKM', 'MGNT',
